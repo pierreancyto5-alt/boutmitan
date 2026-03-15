@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -864,9 +865,53 @@
   }
   .promo-card-info p { font-size:0.8rem; margin:0; color:rgba(240,240,240,0.5); }
 
+  /* ===== MOBILE MENU ===== */
+  .hamburger {
+    display:none;
+    flex-direction:column; gap:5px;
+    background:none; border:none; cursor:pointer; padding:4px;
+  }
+  .hamburger span {
+    width:24px; height:2px; background:var(--white);
+    transition:all 0.3s;
+    display:block;
+  }
+
+  .mobile-nav {
+    display:none;
+    position:fixed; top:60px; left:0; right:0;
+    background:rgba(8,8,8,0.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,26,26,0.2);
+    z-index:99;
+    flex-direction:column;
+    padding:1rem 0;
+  }
+  .mobile-nav.open { display:flex; }
+  .mobile-nav a {
+    padding:0.9rem 2rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:1.1rem;
+    font-weight:700;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--mid);
+    text-decoration:none;
+    border-left:3px solid transparent;
+    transition:all 0.2s;
+    cursor:pointer;
+    display:block;
+  }
+  .mobile-nav a:hover, .mobile-nav a.active {
+    color:var(--white); border-left-color:var(--red);
+    background:rgba(255,26,26,0.06);
+  }
+
   /* ===== RESPONSIVE ===== */
   @media(max-width:600px){
     nav { display:none; }
+    .hamburger { display:flex; }
+    .header-cta { display:none; }
     .hero-stats { gap:1.5rem; }
     .dash-num { font-size:2rem; }
     header { padding:1rem 1.5rem; }
@@ -903,7 +948,19 @@
     <a onclick="showPage('stats')" id="nav-stats">Stats</a>
   </nav>
   <button class="header-cta" onclick="showPage('booking')">Book Now</button>
+  <button class="hamburger" onclick="toggleMobileNav()" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a onclick="showPage('home');closeMobileNav()">🏠 Home</a>
+  <a onclick="showPage('djs');closeMobileNav()">🎧 DJs Underground</a>
+  <a onclick="showPage('booking');closeMobileNav()">📅 Booking</a>
+  <a onclick="showPage('marketing');closeMobileNav()">📣 Marketing</a>
+  <a onclick="showPage('stats');closeMobileNav()">📊 Dashboard Stats</a>
+</div>
 
 <!-- HOME -->
 <section id="home" class="page active">
@@ -1576,6 +1633,15 @@ setTimeout(() => {
   animateCounter(document.getElementById('statEvents'), 87);
   animateCounter(document.getElementById('statCities'), 8);
 }, 500);
+
+// Mobile nav
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  nav.classList.toggle('open');
+}
+function closeMobileNav() {
+  document.getElementById('mobileNav').classList.remove('open');
+}
 
 // Init ticker
 document.getElementById('tickerBar').style.display = 'block';
